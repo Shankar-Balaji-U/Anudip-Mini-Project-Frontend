@@ -1,0 +1,75 @@
+<!-- col-sm-12 col-md-9 col-lg-7 col-xl-5  -->
+<div class="ms-4 my-auto bg-light rounded border shadow shadow-sm py-5 px-4">
+	<h4 class="mb-3">Register new user</h4>
+	<form class="needs-validation" [formGroup]="userForm" novalidate>
+	    <!-- <img class="me-md-3 mb-2" src="assets/images/socialize-icon.png" alt="socialize-icon"> -->
+		
+		<div class="row g-4">
+			<div class="col-7">
+				<label for="username" class="form-label">Username</label>
+				<div class="input-group input-group-sm has-validation">
+					<span class="input-group-text">@</span>
+					<input type="text" class="form-control" [class.is-invalid]="username?.invalid && username?.dirty" id="username" placeholder="Username" formControlName="username" [attr.autocomplete]="'username'">
+					<div class="invalid-feedback" >
+						<ng-container *ngIf="username?.errors?.['required']">This field is required.</ng-container>
+						<ng-container *ngIf="username?.errors?.['uniqueUsername']">{{username?.value}} is already exist</ng-container>
+					</div>
+				</div>
+			</div>
+			<div class="col-5 position-relative">
+				<label for="image">
+	    			<img class="me-md-3 mb-2 img-thumbnail" [src]="profile_url" alt="upload profile image">
+	            	<input class="d-none" type="file" id="image" [class.is-invalid]="image?.invalid && image?.dirty" (change)="loadPreviewImage($event)" formControlName="image" accept="image/jpeg, image/png">
+	    		</label>
+	    		<div *ngIf="image?.value" class="preview-reset-container">
+	            	<button type="button" class="btn btn-danger m-auto" (click)="setProfileImage(null)">
+	            		<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
+								  <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
+						</svg>
+	            	</button>
+	    		</div>
+			</div>
+			<div class="col-sm-6">
+				<label for="firstName" class="form-label">First name <span class="text-body-secondary">(Optional)</span></label>
+				<input type="text" class="form-control form-control-sm" [class.is-invalid]="firstname?.invalid && firstname?.dirty" id="firstName" formControlName="firstname">
+				<div *ngIf="firstname?.errors?.['required']" class="invalid-feedback" >No whitespace is allowed.</div>
+			</div>
+			<div class="col-sm-6">
+				<label for="lastName" class="form-label">Last name <span class="text-body-secondary">(Optional)</span></label>
+				<input type="text" class="form-control form-control-sm" [class.is-invalid]="lastname?.invalid && lastname?.dirty" id="lastName" formControlName="lastname">
+				<div *ngIf="username?.errors?.['required']" class="invalid-feedback" >No whitespace is allowed.</div>
+			</div>
+
+			<div class="col-12">
+				<label for="mobile" class="form-label">Mobile No. <span class="text-body-secondary">(Optional)</span></label>
+              	<input type="tel" class="form-control form-control-sm" [class.is-invalid]="mobile?.invalid && mobile?.dirty" id="mobile" placeholder="+91-99999-99999" formControlName="mobile" pattern="[0-9]{10}">
+				<div *ngIf="mobile?.errors?.['email']" class="invalid-feedback" >Please enter a valid email address.</div>
+            </div>
+
+			<div class="col-12">
+				<label for="email" class="form-label">Email <span class="text-body-secondary">(Optional)</span></label>
+              	<input type="email" class="form-control form-control-sm" [class.is-invalid]="email?.invalid && email?.dirty" id="email" placeholder="you@example.com" formControlName="email">
+				<div *ngIf="email?.errors?.['email']" class="invalid-feedback" >Please enter a valid email address.</div>
+            </div>
+            <div class="col-sm-6">
+				<label for="password1" class="form-label">Password</label>
+				<input type="password" class="form-control form-control-sm" [class.is-invalid]="passwordOne?.invalid && passwordOne?.touched" id="password1" formControlName="password1" [attr.autocomplete]="'new-password'">
+				<div class="invalid-feedback">
+					<ng-container *ngIf="passwordOne?.errors?.['required']">Please enter a password.</ng-container>
+					<ng-container *ngIf="passwordOne?.errors?.['minlength']">Minimum length is 8. Please enter a long password.</ng-container>
+				</div>
+			</div>
+			<div class="col-sm-6">
+				<label for="password2" class="form-label">Confirm password</label>
+				<input type="password" class="form-control form-control-sm" [class.is-invalid]=" (passwordTwo?.invalid || userForm.errors?.['passwordMismatch']) && passwordTwo?.dirty" id="password2" formControlName="password2" [attr.autocomplete]="'new-password'">
+				<div class="invalid-feedback">
+					<ng-container *ngIf="passwordTwo?.errors?.['required']">Please enter confirm password.</ng-container>
+					<ng-container *ngIf="passwordTwo?.errors?.['minlength']">Minimum length is 8. Please enter a long password.</ng-container>
+					<ng-container *ngIf="userForm.errors?.['passwordMismatch']">check the confirm password. Password is mismatch.</ng-container>
+				</div>
+			</div>
+		</div>
+		<hr class="my-4">
+		<button class="w-100 btn btn-primary btn-lg" [disabled]="!userForm.valid" (click)="onSubmit()" type="submit">Let's Go</button>
+	</form>
+</div>

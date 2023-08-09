@@ -1,0 +1,50 @@
+    <th scope="row" class="align-middle">{{ id }}</th>
+    <td class="align-middle" [formGroup]="userForm">
+        <label [for]="image_upload_id" (click)="setProfileImage('')">
+            <img class="img-fluid avatar rounded-circle" [class.is-invalid]="image?.invalid && image?.dirty" [src]="image_uri" [id]="image_preview_id">
+        </label>
+        <input type="file" accept="image/png, image/jpeg" class="d-none" [class.is-invalid]="image?.invalid && image?.dirty" formControlName="image" [id]="image_upload_id" (change)="loadPreviewImage($event)">
+    </td>
+    <td class="align-middle" [formGroup]="userForm">
+        <input type="text" class="form-control" [class.is-invalid]="username?.invalid && username?.dirty" placeholder="Username" formControlName="username" [attr.autocomplete]="'username'" [readonly]="userRow" (dblclick)="toEditable($event)" (blur)="toNonEditable($event)">
+        <div class="invalid-feedback list-unstyled">
+            <li *ngIf="username?.errors?.['required']">This field is required.</li>
+            <li *ngIf="username?.errors?.['minlength']">Username should be atleast {{ username?.errors?.['minlength'].actualLength }}</li>
+            <li *ngIf="username?.errors?.['containsSpace']">No space is allowed</li>
+            <li *ngIf="username?.errors?.['uniqueUsername']">{{ username?.value }} is already exist</li>
+        </div>
+    </td>
+    <td class="align-middle" [formGroup]="userForm">
+        <input type="text" class="form-control" [class.is-invalid]="fullname?.invalid && fullname?.dirty" formControlName="fullname" [readonly]="userRow" (dblclick)="toEditable($event)" (blur)="toNonEditable($event)">
+    </td>
+    <td class="align-middle" [formGroup]="userForm">
+        <input type="text" class="form-control" [class.is-invalid]="email?.invalid && email?.dirty" formControlName="email" [readonly]="userRow" (dblclick)="toEditable($event)" (blur)="toNonEditable($event)">
+        <ul class="invalid-feedback list-unstyled">
+            <li class="list-item" *ngIf="email?.errors?.['email']">Check your email address is valid</li>
+        </ul>
+    </td>
+    <td class="align-middle" [formGroup]="userForm">
+        <input type="tel" class="form-control" [class.is-invalid]="mobile?.invalid && mobile?.dirty" formControlName="mobile" [readonly]="userRow" (dblclick)="toEditable($event)" (blur)="toNonEditable($event)">
+        <ul class="invalid-feedback list-unstyled">
+            <li class="list-item" *ngIf="mobile?.errors?.['mobileNo']">Mobile number must be a 10 digit number</li>
+        </ul>
+    </td>
+    <td class="align-middle" [formGroup]="userForm">
+        <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+            <button type="button" class="btn btn-primary" [class.btn-danger]="userForm.invalid"  *ngIf="!userRow" (click)="onAdd()" [disabled]="userForm.invalid && false">Add</button>
+            <button type="button" class="btn btn-danger" *ngIf="userRow" (click)="onDelete($event)">Delete</button>
+
+            <div class="btn-group" role="group">
+                <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" (click)="createModel()"></button>
+                <ul class="dropdown-menu">
+                    <li>
+                        <button class="btn btn-link" type="button" [attr.id]="setpassword_model_button_id" data-bs-toggle="offcanvas" [attr.data-bs-target]="'#' + setpassword_model_id" aria-controls="setPasswordModel">{{!userRow?'set':'change'}} password</button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </td>
+
+
+    <!-- [readonly]="userRow" -->
+    <!-- this will tell the element to behave readonly when the userRow is already exist, not for the new row -->
